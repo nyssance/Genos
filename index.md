@@ -1,17 +1,17 @@
-Genos
-=====
+---
+layout: default
+---
 [ ![Download](https://api.bintray.com/packages/nyssance/maven/genos/images/download.svg) ](https://bintray.com/nyssance/maven/genos/_latestVersion)
 
-Genos makes it easier to build better Android apps more quickly and with less code.
-For more information please see [the website][1].
+* TOC
+{:toc}
 
-Show you the code
-------------------
-__Step 0 (between  10 minutes to 1 day):__
+### Show you the code
+#### __Step 0 (between 10 minutes to 1 day):__
 
 Install Java8 & [Android Studio 3.0.1](https://developer.android.com/studio/index.html).
 
-__Step 1 (need 2 minutes ):__
+#### __Step 1 (need 2 minutes):__
 
 Start a new project. [official guide][10]
 
@@ -31,7 +31,7 @@ dependencies {
     ...
 ```
 
-__Step 2 (5 minutes):__
+#### __Step 2 (5 minutes):__
 
 Create 4 classes: _User_, _APIService_, _AppManager_, _UserList_
 
@@ -105,11 +105,11 @@ public class UserList extends TableList<User, SubtitleHolder> {
 }
 ```
 
-__Step 3(1 minutes)__
+#### __Step 3 (1 minutes)__
 
 Modify _MainActivity_, _AndroidManifest.xml_
 ```java
-import genos.ui.TabBarActivity
+import genos.ui.TabBarActivity;
 
 publc class MainActivity extends TabBarActivity {
 
@@ -137,27 +137,25 @@ _AndroidManifest.xml_
 </manifest>
 ```
 
-__Step 4__
+#### __Step 4__
 
 Run it
-#### Congratulations!  your are an Android expert~~
+__Congratulations! your are an Android expert~~__
 
-Vendor
-------
-* Android
- * [Support Library](https://developer.android.com/topic/libraries/support-library/index.html)
- * [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html)
- * [ATSL](https://developer.android.com/topic/libraries/testing-support-library/index.html)
-* Others
- * [Retrofit](https://square.github.io/retrofit/)
- * [Glide](https://github.com/bumptech/glide)
- * [EventBus](https://github.com/greenrobot/EventBus)
- * [Logger](https://github.com/orhanobut/logger)
+### Vendor
+- Android
+  - [Support Library](https://developer.android.com/topic/libraries/support-library/index.html)
+  - [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html)
+  - [ATSL](https://developer.android.com/topic/libraries/testing-support-library/index.html)
+- Others
+  - [Retrofit](https://square.github.io/retrofit/)
+  - [Glide](https://github.com/bumptech/glide)
+  - [EventBus](https://github.com/greenrobot/EventBus)
+  - [Logger](https://github.com/orhanobut/logger)
 
 Special thanks [bintray-release](https://github.com/novoda/bintray-release), you save my life.
 
-License
-=======
+### License
 
     Copyright 2018 NY (nyssance@icloud.com)
 
@@ -173,7 +171,5 @@ License
     See the License for the specific language governing permissions and
     limitations under the License.
 
-
- [1]: https://github.com/nyssance/genos
- [2]: https://search.maven.org/remote_content?g=com.nyssance.genos&a=genos&v=LATEST
- [10]: https://developer.android.com/studio/projects/create-project.html
+[2]: https://search.maven.org/remote_content?g=com.nyssance.genos&a=genos&v=LATEST
+[10]: https://developer.android.com/studio/projects/create-project.html
