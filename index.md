@@ -66,7 +66,16 @@ _AppManager_
 import genos.BaseAppManager;
 
 public class AppManager extends BaseAppManager {
+    private static final AppManager INSTANCE = new AppManager();
     public static APIService API;
+
+    private AppManager() {
+        super();
+    }
+
+    public static AppManager getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public void settings() {
