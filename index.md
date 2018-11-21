@@ -26,8 +26,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // Replace default by Genos
     // implementation 'com.android.support:appcompat-v7:28.0.0'
-    // implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.nyssance.genos:genos:1.1.0'
+    // implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.nyssance.genos:genos:1.1.2'
     ...
 ```
 
@@ -37,76 +37,68 @@ Create 4 classes: _User_, _APIService_, _AppManager_, _UserList_
 
 _User_
 
-```java
-import com.google.gson.annotations.SerializedName;
+```kotlin
+import com.google.gson.annotations.SerializedName
 
-public class User {
-    public String login;
-    public long id;
-    @SerializedName("avatar_url")
-    public String avatarUrl;
-}
+data class User(
+    var login: String?,
+    var id: Long,
+    @SerializedName("avatar_url") var avatarUrl: String?,
+    var name: String?
+)
 ```
 
 _APIService_
-```java
-public interface APIService {
-    @GET("api/v1/users/")
-    Call<List<User>> userList(@Query("page") int page);
+```kotlin
+interface APIService {
+    @GET("repos/square/retrofit/contributors")
+    fun userList(@Query("page") page: Int): Call<List<User>>
 
-    @GET("api/v1/users/{id}/")
-    Call<User> userDetail(@Path("id") int id);
+    @GET("users/{login}")
+    fun userDetail(@Path("login") login: String): Call<User>
 }
 ```
 
 _AppManager_
-```java
-import genos.BaseAppManager;
+```kotlin
+import genos.BaseAppManager
 
-public class AppManager extends BaseAppManager {
-    private static final AppManager INSTANCE = new AppManager();
-    public static APIService API;
-
-    private AppManager() {
-        super();
+class AppManager private constructor() : BaseAppManager() {
+    companion object {
+        val instance = AppManager()
+        lateinit var API: APIService
     }
 
-    public static AppManager getInstance() {
-        return INSTANCE;
-    }
-
-    @Override
-    public void settings() {
-        BASE_URL = "https://api.github.com";
+    override fun settings() {
+        BASE_URL = "https://api.github.com"
         // Create retrofit
-        API = onCreateRetrofit().create(APIService.class);
+        API = onCreateRetrofit().create(APIService::class.java)
     }
     ...
 
 ```
 
 _UserList_
-```java
-import genos.ui.fragment.TableList;
-import genos.ui.viewholder.SubtitleHolder;
+```
+import genos.ui.fragment.TableList
+import genos.ui.viewholder.SubtitleHolder
 
-public class UserList extends TableList<User, SubtitleHolder> {
-    @Override
-    protected void onPrepare() {
-        mCall = API.userList(mPage);
-        mTileId = R.layout.list_item_subtitle;
+class UserList : TableList<User, SubtitleHolder>() {
+    override fun onPrepare() {
+        call = API.userList(page)
+        tileId = R.layout.list_item_subtitle
     }
 
-    @Override
-    protected void onDisplayItem(@NonNull User item, @NonNull SubtitleHolder holder, int viewType) {
-        holder.title.setText(item.login);
-        holder.subtitle.setText("id: " + item.id);
-        holder.setImage(holder.icon, item.avatarUrl);
+    override fun onDisplayItem(item: User, holder: SubtitleHolder, viewType: Int) {
+        holder.title.text = item.login
+        holder.subtitle.text = item.id.toString()
+        item.avatarUrl?.let {
+            holder.setImage(holder.icon, it)
+        }
     }
 
-    @Override
-    protected void onOpenItem(@NonNull User item) {
-        Snackbar.make(mListView, "Replace with your own action", Snackbar.LENGTH_SHORT).show();
+    override fun onOpenItem(item: User) {
+        Snackbar.make(listView, ""Replace with your own action"", Snackbar.LENGTH_SHORT).show()
     }
 }
 ```
@@ -114,18 +106,17 @@ public class UserList extends TableList<User, SubtitleHolder> {
 #### __Step 3 (1 minutes)__
 
 Modify _MainActivity_, _AndroidManifest.xml_
-```java
-import genos.ui.TabBarActivity;
+```kotlin
+import genos.ui.TabBarActivity
 
-publc class MainActivity extends TabBarActivity {
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        fragments.append(R.id.navigation_home, new UserList());
-        fragments.append(R.id.navigation_discover, PlaceholderFragment.newInstance(2));
-        fragments.append(R.id.navigation_me, PlaceholderFragment.newInstance(3));
-        onNavigationItemSelected(R.id.navigation_home);
+class MainActivity : TabBarActivity {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        with(fragments) {
+            append(R.id.navigation_home, UserList())
+            append(R.id.navigation_discover, PlaceholderFragment.newInstance(2))
+            append(R.id.navigation_me, PlaceholderFragment.newInstance(3))
+        }
     }
 }
 ```
@@ -150,9 +141,7 @@ __Congratulations! your are an Android expert~~__
 
 ### Vendor
 - Android
-  - [Support Library](https://developer.android.com/topic/libraries/support-library/index.html)
-  - [Android Architecture Components](https://developer.android.com/topic/libraries/architecture/index.html)
-  - [ATSL](https://developer.android.com/topic/libraries/testing-support-library/index.html)
+  - [Android Jetpack](https://developer.android.com/jetpack/)
 - Others
   - [Retrofit](https://square.github.io/retrofit/)
   - [Glide](https://github.com/bumptech/glide)
@@ -169,7 +158,7 @@ Special thanks [bintray-release](https://github.com/novoda/bintray-release), you
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-       https://www.apache.org/licenses/LICENSE-2.0
+        https://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
