@@ -27,7 +27,7 @@ dependencies {
     // Replace default by Genos
     // implementation 'com.android.support:appcompat-v7:28.0.0'
     // implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.nyssance.genos:genos:1.1.2'
+    implementation 'com.nyssance.genos:genos:1.1.3'
     ...
 ```
 
