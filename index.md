@@ -20,14 +20,14 @@ Screen | Configure
 Target Android Devices | Phone and Tablet : API 21
 Add an Activity to Mobile | Empty Activity
 
-Config _Gradle Scripts: build.gradle (Module: app)_.
+Open the _build.gradle (Module: app)_ file for your app module, add Genos to the `dependencies` section.
 ```gradle
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // Replace default by Genos
     // implementation 'com.android.support:appcompat-v7:28.0.0'
     // implementation 'com.android.support.constraint:constraint-layout:1.1.4'
-    implementation 'com.nyssance.genos:genos:1.1.4'
+    implementation 'com.nyssance.genos:genos:1.1.5'
     ...
 ```
 
@@ -79,7 +79,7 @@ class AppManager private constructor() : BaseAppManager() {
 ```
 
 _UserList_
-```
+```kotlin
 import genos.ui.fragment.TableList
 import genos.ui.viewholder.SubtitleHolder
 
@@ -114,8 +114,8 @@ class MainActivity : TabBarActivity {
         super.onCreate(savedInstanceState)
         with(fragments) {
             append(R.id.navigation_home, UserList())
-            append(R.id.navigation_discover, PlaceholderFragment.newInstance(2))
-            append(R.id.navigation_me, PlaceholderFragment.newInstance(3))
+            append(R.id.navigation_discover, PlaceholderFragment.instance("2"))
+            append(R.id.navigation_me, PlaceholderFragment.instance("3"))
         }
     }
 }
