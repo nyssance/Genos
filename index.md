@@ -6,12 +6,12 @@ layout: default
 * TOC
 {:toc}
 
-### Show you the code
-#### __Step 0 (between 10 minutes to 1 day):__
+## Show you the code
+### __Step 0 (between 10 minutes to 1 day):__
 
-Install Java8 & [Android Studio 3.2.1](https://developer.android.com/studio/).
+Install Java & [Android Studio 3.5](https://developer.android.com/studio/).
 
-#### __Step 1 (need 2 minutes):__
+### __Step 1 (need 2 minutes):__
 
 Start a new project. [official guide][10]
 
@@ -27,11 +27,11 @@ dependencies {
     // Replace default by Genos
     // implementation 'com.android.support:appcompat-v7:28.0.0'
     // implementation 'com.android.support.constraint:constraint-layout:1.1.4'
-    implementation 'com.nyssance.genos:genos:1.1.5'
+    implementation 'com.nyssance.genos:genos:1.1.7'
     ...
 ```
 
-#### __Step 2 (5 minutes):__
+### __Step 2 (5 minutes):__
 
 Create 4 classes: _User_, _APIService_, _AppManager_, _UserList_
 
@@ -103,7 +103,7 @@ class UserList : TableList<User, SubtitleHolder>() {
 }
 ```
 
-#### __Step 3 (1 minutes)__
+### __Step 3 (1 minutes)__
 
 Modify _MainActivity_, _AndroidManifest.xml_
 ```kotlin
@@ -134,12 +134,12 @@ _AndroidManifest.xml_
 </manifest>
 ```
 
-#### __Step 4__
+### __Step 4__
 
 Run it
 __Congratulations! your are an Android expert~~__
 
-### Vendor
+## Vendor
 - Android
   - [Android Jetpack](https://developer.android.com/jetpack/)
 - Others
@@ -150,7 +150,7 @@ __Congratulations! your are an Android expert~~__
 
 Special thanks [bintray-release](https://github.com/novoda/bintray-release), you save my life.
 
-### License
+## License
 
     Copyright 2018 NY <nyssance@icloud.com>
 
