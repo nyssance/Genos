@@ -8,33 +8,47 @@ layout: default
 
 ## Show you the code
 
-### __Step 0 (between 10 minutes to 1 day):__
+### __Step 0 (About 10 minutes to 1 day):__
 
-Install Java & [Android Studio 3.5](https://developer.android.com/studio/).
+Install Java & [Android Studio 3.6](https://developer.android.com/studio/).
 
-### __Step 1 (need 2 minutes):__
+### __Step 1 (2 minutes):__
 
-Start a new project. [official guide][10]
+Create New project. [official guide][10]
 
 Screen | Configure
 ------ | ---------
-Target Android Devices | Phone and Tablet : API 21
-Add an Activity to Mobile | Empty Activity
+Select a Project Template | Empty Activity
+Configure Your Project | Minimum SDK: API 21
 
 Open the _build.gradle (Module: app)_ file for your app module, add Genos to the `dependencies` section.
 ```gradle
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // Replace default by Genos
-    // implementation 'com.android.support:appcompat-v7:28.0.0'
-    // implementation 'com.android.support.constraint:constraint-layout:1.1.4'
+    // implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // implementation 'androidx.appcompat:appcompat:1.0.2'
+    // implementation 'androidx.core:core-ktx:1.0.2'
+    // implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.nyssance.genos:genos:1.2.0'
     ...
 ```
 
 ### __Step 2 (5 minutes):__
 
-Create 4 classes: _APIService_, _Global_, _User_, _UserList_
+Create 4 classes: _User_, _APIService_, _Global_, _UserList_
+
+_User_
+
+```kotlin
+import com.google.gson.annotations.SerializedName
+
+data class User(
+        val id: Long,
+        @SerializedName("login") val username: String,
+        @SerializedName("avatar_url") val avatarUrl: String
+)
+```
 
 _APIService_
 ```kotlin
@@ -57,18 +71,6 @@ fun config() {
     ...
     API = Global.retrofit("https://api.github.com").create(APIService::class.java)
 }
-```
-
-_User_
-
-```kotlin
-import com.google.gson.annotations.SerializedName
-
-data class User(
-        val id: Long,
-        @SerializedName("login") val username: String,
-        @SerializedName("avatar_url") val avatarUrl: String
-)
 ```
 
 _UserList_
@@ -166,4 +168,4 @@ Special thanks [bintray-release](https://github.com/novoda/bintray-release), you
     limitations under the License.
 
 [2]: https://search.maven.org/remote_content?g=com.nyssance.genos&a=genos&v=LATEST
-[10]: https://developer.android.com/studio/projects/create-project.html
+[10]: https://developer.android.com/studio/projects/create-project
