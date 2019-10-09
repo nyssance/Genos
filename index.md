@@ -1,12 +1,13 @@
 ---
 layout: default
 ---
-[ ![Download](https://api.bintray.com/packages/nyssance/maven/genos/images/download.svg) ](https://bintray.com/nyssance/maven/genos/_latestVersion)
+[![Download](https://api.bintray.com/packages/nyssance/maven/genos/images/download.svg)](https://bintray.com/nyssance/maven/genos/_latestVersion)
 
 * TOC
 {:toc}
 
 ## Show you the code
+
 ### __Step 0 (between 10 minutes to 1 day):__
 
 Install Java & [Android Studio 3.5](https://developer.android.com/studio/).
@@ -27,26 +28,13 @@ dependencies {
     // Replace default by Genos
     // implementation 'com.android.support:appcompat-v7:28.0.0'
     // implementation 'com.android.support.constraint:constraint-layout:1.1.4'
-    implementation 'com.nyssance.genos:genos:1.1.7'
+    implementation 'com.nyssance.genos:genos:1.2.0'
     ...
 ```
 
 ### __Step 2 (5 minutes):__
 
-Create 4 classes: _User_, _APIService_, _AppManager_, _UserList_
-
-_User_
-
-```kotlin
-import com.google.gson.annotations.SerializedName
-
-data class User(
-    var login: String?,
-    var id: Long,
-    @SerializedName("avatar_url") var avatarUrl: String?,
-    var name: String?
-)
-```
+Create 4 classes: _APIService_, _Global_, _User_, _UserList_
 
 _APIService_
 ```kotlin
@@ -54,51 +42,57 @@ interface APIService {
     @GET("repos/square/retrofit/contributors")
     fun userList(@Query("page") page: Int): Call<List<User>>
 
-    @GET("users/{login}")
-    fun userDetail(@Path("login") login: String): Call<User>
+    @GET("users/{username}")
+    fun userDetail(@Path("username") username: String): Call<User>
 }
 ```
 
-_AppManager_
+_Global_
 ```kotlin
-import genos.BaseAppManager
+import genos.Global
 
-class AppManager private constructor() : BaseAppManager() {
-    companion object {
-        val instance = AppManager()
-        lateinit var API: APIService
-    }
+lateinit var API: APIService
 
-    override fun settings() {
-        BASE_URL = "https://api.github.com"
-        // Create retrofit
-        API = onCreateRetrofit().create(APIService::class.java)
-    }
+fun config() {
     ...
+    API = Global.retrofit("https://api.github.com").create(APIService::class.java)
+}
+```
 
+_User_
+
+```kotlin
+import com.google.gson.annotations.SerializedName
+
+data class User(
+        val id: Long,
+        @SerializedName("login") val username: String,
+        @SerializedName("avatar_url") val avatarUrl: String
+)
 ```
 
 _UserList_
 ```kotlin
-import genos.ui.fragment.TableList
-import genos.ui.viewholder.SubtitleHolder
+import genos.extension.setImage
+import genos.ui.fragment.generic.List
+import genos.ui.viewholder.DefaultHolder
 
-class UserList : TableList<User, SubtitleHolder>() {
-    override fun onPrepare() {
-        call = API.userList(page)
-        tileId = R.layout.list_item_subtitle
+class UserList : List<User, DefaultHolder>() {
+    override fun onCreate() {
+        call = API.userList(page)  // A retrofit call of this fragment.
+        tileId = R.layout.list_item_subtitle  // The layout res id of list item.
     }
 
-    override fun onDisplayItem(item: User, holder: SubtitleHolder, viewType: Int) {
-        holder.title.text = item.login
-        holder.subtitle.text = item.id.toString()
-        item.avatarUrl?.let {
-            holder.setImage(holder.icon, it)
+    override fun onDisplayItem(item: User, view: DefaultHolder, viewType: Int) {
+        with(view) {
+            icon?.setImage(item.avatarUrl)
+            title?.text = item.username
+            subtitle?.text = item.id.toString()
         }
     }
 
     override fun onOpenItem(item: User) {
-        Snackbar.make(listView, ""Replace with your own action"", Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(listView, "Replace with your own action", Snackbar.LENGTH_SHORT).show()
     }
 }
 ```
@@ -106,12 +100,16 @@ class UserList : TableList<User, SubtitleHolder>() {
 ### __Step 3 (1 minutes)__
 
 Modify _MainActivity_, _AndroidManifest.xml_
-```kotlin
-import genos.ui.TabBarActivity
 
-class MainActivity : TabBarActivity {
+```kotlin
+import genos.ui.activity.TabBarActivity
+import genos.ui.fragment.PlaceholderFragment
+
+class MainActivity : TabBarActivity(1) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        config()
+        supportActionBar?.setTitle(R.string.app_name)
         with(fragments) {
             append(R.id.navigation_home, UserList())
             append(R.id.navigation_discover, PlaceholderFragment.instance("2"))
@@ -140,6 +138,7 @@ Run it
 __Congratulations! your are an Android expert~~__
 
 ## Vendor
+
 - Android
   - [Android Jetpack](https://developer.android.com/jetpack/)
 - Others
